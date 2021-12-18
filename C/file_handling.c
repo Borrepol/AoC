@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 #define FILE_NONE_ERROR -1
 
@@ -39,4 +40,14 @@ int *read_file_int(FILE* fptr) {
 
     rewind(fptr);
     return array;
+}
+
+int read_file_str(FILE* fptr, char **array) {
+    int line_count = count_lines(fptr);
+    for (int i = 0; i < line_count; i++) {
+        array[i] = (char *) malloc(15);
+        fgets(array[i], 15, fptr);
+    }
+
+    return 0;
 }
