@@ -2,6 +2,7 @@
 #include <string.h>
 
 #define FILE_NONE_ERROR -1
+#define MAX_STR_LEN 15
 
 int count_lines(FILE *fptr) {
     char c;
@@ -17,9 +18,20 @@ int count_lines(FILE *fptr) {
     return linecount;
 }
 
-FILE *open_file(char *fname) {
+FILE *open_file_r(char *fname) {
     FILE* fptr;
     fptr = fopen(fname, "r");
+
+    if (!fptr) {
+        fprintf(stderr, "File with filename \"%s\" does not exist.\n", fname);
+        return 0;
+    }
+    return fptr;
+}
+
+FILE *open_file_rb(char *fname) {
+    FILE* fptr;
+    fptr = fopen(fname, "rb");
 
     if (!fptr) {
         fprintf(stderr, "File with filename \"%s\" does not exist.\n", fname);
@@ -31,10 +43,10 @@ FILE *open_file(char *fname) {
 int *read_file_int(FILE* fptr) {
     int line_count = count_lines(fptr);
     int *array = (int *) malloc(line_count * sizeof(int));
-    char *cur = (char *) malloc(15);
+    char *cur = (char *) malloc(MAX_STR_LEN);
 
     for (int i = 0; i < line_count; i++) {
-        fgets(cur, 15, fptr);
+        fgets(cur, MAX_STR_LEN, fptr);
         array[i] = atoi(cur);
     }
 
@@ -42,12 +54,21 @@ int *read_file_int(FILE* fptr) {
     return array;
 }
 
-int read_file_str(FILE* fptr, char **array) {
+void read_file_binary_int(FILE* fptr, int* array) {
+    int line_count = count_lines(fptr);
+    char *cur = (char *) malloc(MAX_STR_LEN);
+    for (int i = 0; i < line_count; i++) {
+        fgets(cur, MAX_STR_LEN, fptr);
+        array[i] = strtol(cur, NULL, 2);
+    }
+    rewind(fptr);
+}
+
+void read_file_str(FILE* fptr, char **array) {
     int line_count = count_lines(fptr);
     for (int i = 0; i < line_count; i++) {
-        array[i] = (char *) malloc(15);
-        fgets(array[i], 15, fptr);
+        array[i] = (char *) malloc(MAX_STR_LEN);
+        fgets(array[i], MAX_STR_LEN, fptr);
     }
-
-    return 0;
+    rewind(fptr);
 }

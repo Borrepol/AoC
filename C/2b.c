@@ -40,7 +40,7 @@ void parse_array(char **a1, int **a2, int count) {
 int main(int argc, char const *argv[])
 {
     char *fname = "../2_input.csv";
-    FILE *fptr = open_file(fname);
+    FILE *fptr = open_file_r(fname);
 
     int line_count = count_lines(fptr);
 

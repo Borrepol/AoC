@@ -10,7 +10,7 @@
 int main(int argc, char const *argv[])
 {
     char *fname = "../1_input.csv";
-    FILE *fptr = open_file(fname);
+    FILE *fptr = open_file_r(fname);
     // In an if-statement: 0 is false, any other value is true.
     if (!fptr)
         return FILE_NONE_ERROR;
